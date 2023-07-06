@@ -101,6 +101,15 @@ def get_orders():
     return data
 
 
+@app.route("/update_orders",methods=["PATCH"])
+def update_order():
+    cursor = app.mysql_connection.cursor()
+    id,status = dict(request.get_json()).values()
+    query = f"update orders set status = '{status}' where id = '{id}'"
+    cursor.execute(query)
+    app.mysql_connection.commit()
+    cursor.close()
+    return "Order Updated"
 
 
 if __name__ == '__main__' :
